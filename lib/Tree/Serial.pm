@@ -20,10 +20,12 @@ sub _init {
     my %data = (
 	separator => '.',
 	degree => 2,
+        traversal => 'pre',
 	(defined $data) ? (%{$data}) : (),
 	);
     $self->{separator} = $data{separator};
     $self->{degree} = $data{degree};
+    $self->{traversal} = $data{traversal};
 }
 
 sub _sepThreshold {
@@ -36,7 +38,7 @@ sub _ixSplit {
     return first { my @ar = $aref->@[0..$_]; _sepThreshold($separator, $degree, \@ar) } (keys @{$aref});
 }
 
-sub treeList2Hash {
+sub strs2hash {
     my ($self, $aref) = @_;
     (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
     my @rest = @{$aref}[1..scalar @{$aref}-1];
@@ -45,9 +47,19 @@ sub treeList2Hash {
     my @right = @rest[$ix+1..$#rest];
     return {
 	name => $aref->[0],
-	left => treeList2Hash($self,\@left),
-	right => treeList2Hash($self,\@right),
+	left => strs2hash($self,\@left),
+	right => strs2hash($self,\@right),
     };
+}
+
+sub strs2lol {
+    my ($self, $aref) = @_;
+    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return [];
+    my @rest = @{$aref}[1..scalar @{$aref}-1];
+    my $ix = _ixSplit($self->{separator}, $self->{degree}, \@rest);
+    my @left = @rest[0..$ix];
+    my @right = @rest[$ix+1..$#rest];
+    return [$aref->[0], strs2lol($self,\@left), strs2lol($self,\@right),];
 }
 
 1;
@@ -56,7 +68,7 @@ __END__
 
 =head1 NAME
 
-Tree::Serial - stub
+Tree::Serial - Perl module for deserializing lists of strings into tree-like structures and vice versa
 
 =head1 SYNOPSIS
 
@@ -65,6 +77,16 @@ This is a stub.
 =head1 DESCRIPTION
 
 This is a stub.
+
+=head1 ATTRIBUTES
+
+=head2 separator
+
+=head2 degree
+
+=head2 traversal
+
+=head1 METHODS
 
 =head1 INSTALLATION
 

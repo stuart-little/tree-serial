@@ -12,7 +12,7 @@ This is a stub.
 
 =head1 INSTALLATION
 
-Using C<cpanm>: clone this repo, C<cd> into it, and then:
+Using L<cpanm|https://metacpan.org/dist/App-cpanminus/view/bin/cpanm>: clone this repo, C<cd> into it, and then:
 
     $ cpanm .
 

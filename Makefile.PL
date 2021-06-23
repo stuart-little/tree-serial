@@ -18,8 +18,8 @@ WriteMakefile(
 	    resources => {
 		repository => {
 		    type => 'git',
-		    url  => '',
-		    web  => '',
+		    url  => 'https://github.com/stuart-little/tree-serial.git',
+		    web  => 'https://github.com/stuart-little/tree-serial',
 		},
 	}})
      : ()

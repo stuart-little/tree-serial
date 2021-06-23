@@ -95,7 +95,9 @@ The idea is that you would instantiate the deserializer class that this package 
 
 =over
 
-=item the C<separator>, meaning the dummy piece of string that indicates an empty node;
+=item the C<separator> 
+
+meaning the dummy piece of string that indicates an empty node;
 
 =item the C<degree>, meaning the maximal degree the deserializer assumes all tree nodes have. Whatever missing nodes there are, you will then have to indicate by instances of the above-mentioned C<separator>;
 

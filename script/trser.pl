@@ -6,4 +6,4 @@ use Data::Dumper;
 use Tree::Serial;
 
 say Dumper(Tree::Serial->new());
-say Dumper(Tree::Serial->new({traversal => 1})->strs2lol(\@ARGV));
+say Dumper(Tree::Serial->new({traversal => 0})->strs2lol(\@ARGV));

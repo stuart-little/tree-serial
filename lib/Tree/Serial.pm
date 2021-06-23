@@ -79,7 +79,7 @@ __END__
 
 =head1 NAME
 
-Tree::Serial - Perl module for deserializing lists of strings into tree-like structures and vice versa
+Tree::Serial - Perl module for deserializing lists of strings into tree-like structures
 
 =head1 SYNOPSIS
 
@@ -87,7 +87,19 @@ This is a stub.
 
 =head1 DESCRIPTION
 
-This is a stub.
+The purpose of the module is to turn lists of strings (typically passed on the command line) into tree-like structures: hashes and lists of lists (of lists, etc.; i.e. nested).
+
+=head1 INSTALLATION
+
+Using L<cpanm|https://metacpan.org/dist/App-cpanminus/view/bin/cpanm>: clone this repo, C<cd> into it, and then:
+
+    $ cpanm .
+
+Manual install:
+
+    $ perl Makefile.PL
+    $ make
+    $ make install
 
 =head1 ATTRIBUTES
 
@@ -95,7 +107,7 @@ This is a stub.
 
 =head2 degree
 
-The common maximal degree assumed of the tree nodes. It defaults to 2:
+The common maximal degree assumed of the tree nodes. It defaults to 2 (i.e. to handling I<binary> trees):
 
     my $ts = Tree::Serial->new({degree => 2});
 
@@ -109,24 +121,12 @@ but you can specify any other positive integer.
 
     my $ts = Tree::Serial->new({traversal => 1});
 
-A non-negative integer, indicating where the root is placed in a tree traversal. It defaults to 0, meaning the root comes first, before the subtrees: what is usually called L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>.
+A non-negative integer, indicating where the root is placed as you deserialize the tree into a list of lists. It defaults to 0, meaning the root comes first, before the subtrees: what is usually called L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>.
 
 If you've specified a C<k>-ary tree, then setting the C<traversal> attribute to C<k> means you are doing a L<post-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/> instead:
 
     my $ts = Tree::Serial->new({degree => 3, traversal => 3});
 
 =head1 METHODS
-
-=head1 INSTALLATION
-
-Using L<cpanm|https://metacpan.org/dist/App-cpanminus/view/bin/cpanm>: clone this repo, C<cd> into it, and then:
-
-    $ cpanm .
-
-Manual install:
-
-    $ perl Makefile.PL
-    $ make
-    $ make install
 
 =cut

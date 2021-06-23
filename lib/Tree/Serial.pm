@@ -88,7 +88,9 @@ This is a stub.
 
 =head2 traversal
 
+    my $ts = Tree::Serial->new({traversal => 1});
 
+Can be 0 (meaning pre-order), 1 (meaning in-order), or 2 (meaning post-order). It will modify the behavior of the list-of-lists (de)serialization functions accordingly.
 
 =head1 METHODS
 

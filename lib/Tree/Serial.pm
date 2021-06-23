@@ -128,7 +128,7 @@ the C<traversal>: a non-negative integer between 0 and C<degree> that tells the 
 
 =back
 
-You always specify the tree nodes in L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>; the C<traversal> attribute specifies what sort of I<output> to produce. An example: assuming the C<separator> is "." and the C<degree> is 2 (the default), the list 
+You always specify the tree nodes in L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>; the C<traversal> attribute specifies what sort of I<output> to produce. An example: assuming the C<separator> is C<'.'> and the C<degree> is 2 (the default), the list 
 
     1 2 4 . 7 . . . 3 5 . . 6 . . 
 
@@ -160,6 +160,8 @@ Manual install:
 =head1 ATTRIBUTES
 
 =head2 separator
+
+The string that will indicate a missing node to the deserializer, if you specify a C<k>-ary tree that is not L<full|https://xlinux.nist.gov/dads/HTML/fullBinaryTree.html>. It defauls to C<'.'>. 
 
 =head2 degree
 

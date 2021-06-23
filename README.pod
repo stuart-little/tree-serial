@@ -1,0 +1,27 @@
+=head1 NAME
+
+Tree::Serial - stub
+
+=head1 SYNOPSIS
+
+This is a stub.
+
+=head1 DESCRIPTION
+
+This is a stub.
+
+=head1 INSTALLATION
+
+Using C<cpanm>: clone this repo, C<cd> into it, and then:
+
+    $ cpanm .
+
+Manual install:
+
+    $ perl Makefile.PL
+    $ make
+    $ make install
+
+
+=cut
+

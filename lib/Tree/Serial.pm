@@ -83,11 +83,41 @@ Tree::Serial - Perl module for deserializing lists of strings into tree-like str
 
 =head1 SYNOPSIS
 
-This is a stub.
+The following piece of code appears as C<script/trser.pl> in the present distribution. 
+
+STUB
 
 =head1 DESCRIPTION
 
-The purpose of the module is to turn lists of strings (typically passed on the command line) into tree-like structures: hashes and lists of lists (of lists, etc.; i.e. nested).
+The purpose of the module is to turn lists of strings (typically passed on the command line) into tree-like structures: hashes and lists of lists (of lists, etc.; i.e. nested). 
+
+The idea is that you would instantiate the deserializer class that this package provides, passing it a number of parameters:
+
+=over
+
+=item the C<separator>, meaning the dummy piece of string that indicates an empty node;
+
+=item the C<degree>, meaning the maximal degree the deserializer assumes all tree nodes have. Whatever missing nodes there are, you will then have to indicate by instances of the above-mentioned C<separator>;
+
+=item the C<traversal>: a non-negative integer between 0 and C<degree> that tells the deserializer where to place the root when producing a list of lists.
+
+=back
+
+You always specify the tree nodes in L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>; the C<traversal> attribute specifies what sort of I<output> to produce. An example: assuming the C<separator> is "." and the C<degree> is 2 (the default), the list 
+
+    1 2 4 . 7 . . . 3 5 . . 6 . . 
+
+would represent the binary tree
+
+        1
+       / \
+      2   3
+     /   / \
+    4   5   6
+     \
+      7
+
+The inspiration was provided by L<this discussion|https://stackoverflow.com/questions/2675756/efficient-array-storage-for-binary-tree/2676849#2676849>. It applies to binary trees, only whereas the present module handles C<k>-ary trees for arbitrary C<k >= 2>.  
 
 =head1 INSTALLATION
 

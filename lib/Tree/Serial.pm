@@ -187,4 +187,6 @@ If you've specified a C<k>-ary tree, then setting the C<traversal> attribute to 
 
 =head1 METHODS
 
+STUB
+
 =cut

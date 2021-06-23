@@ -110,13 +110,14 @@ You always specify the tree nodes in L<pre-order traversal|https://www.geeksforg
     1 2 4 . 7 . . . 3 5 . . 6 . . 
 
 would represent the binary tree
-        1
-       / \
-      2   3
-     /   / \
-    4   5   6
-     \
-      7
+
+    1
+   / \
+  2   3
+ /   / \
+4   5   6
+\
+ 7
 
 The inspiration was provided by L<this discussion|https://stackoverflow.com/questions/2675756/efficient-array-storage-for-binary-tree/2676849#2676849>. It applies to binary trees, only whereas the present module handles C<k>-ary trees for arbitrary C<k >= 2>.  
 

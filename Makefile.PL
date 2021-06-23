@@ -11,7 +11,8 @@ WriteMakefile(
     MIN_PERL_VERSION => '5.12.0',
     PREREQ_PM        => {	
 	'warnings' => 0,
-	    'List::Util' => 1.56,	    
+	    'Data::Dumper' => 2.179,
+	    'List::Util' => 1.56,
     },
     (eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (META_MERGE => {
 	'meta-spec' => { version => 2 },

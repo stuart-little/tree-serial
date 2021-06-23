@@ -3,11 +3,12 @@ package Tree::Serial;
 use warnings;
 use v5.12;
 
-use List::Util qw(first reduce sum zip);
+use List::Util qw(first reduce sum);
 
 our $VERSION=0.1;
 
 sub new {
+    for (@INC) {say;}
     my ($class,$data) = @_;
     my $self = {};
     bless $self, $class;
@@ -15,78 +16,89 @@ sub new {
     return $self;
 }
 
-sub _init {
-    my ($self,$data) = @_;
-    my %data = (
-	separator => '.',
-	degree => 2,
-        traversal => 0,
-	(defined $data) ? (%{$data}) : (),
-	);
-    $self->{separator} = $data{separator};
-    $self->{degree} = $data{degree};
-    $self->{traversal} = $data{traversal};
-}
+## sub _init {
+##     my ($self,$data) = @_;
+##     my %data = (
+## 	separator => '.',
+## 	degree => 2,
+##         traversal => 0,
+## 	(defined $data) ? (%{$data}) : (),
+## 	);
+##     $self->{separator} = $data{separator};
+##     $self->{degree} = $data{degree};
+##     $self->{traversal} = $data{traversal};
+## }
+## 
+## sub _eatWhileNot {
+##     my ($pred,$acc,$el) = @_;
+##     my @larger = (@{$acc->[1]}, $el);
+##     return ($pred->(\@larger)) ? ([[@{$acc->[0]}, \@larger],[]]) : ([$acc->[0], \@larger]);
+## }
+## 
+## sub _chunkBy {
+##     my ($pred,$aref) = @_;
+##     my $reduction = reduce { _eatWhileNot($pred, $a, $b) } [[],[]], @{$aref};
+##     return $reduction->[0];
+## }
+## 
+## sub _isKAry {
+##     my ($separator,$degree,$aref) = @_;
+##     return ((sum map { ($_ eq $separator) ? (-1) : ($degree-1) } @{$aref}) == -1);
+## }
+## 
+## sub _chunkKAry {
+##     my ($separator,$degree,$aref) = @_;
+##     my $pred = sub { _isKAry($separator,$degree,$_[0]) };
+##     return _chunkBy($pred,$aref);
+## }
+## 
+## sub strs2hash {
+##     my ($self, $aref) = @_;
+##     (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
+##     my @rest = @{$aref}[1..scalar @{$aref}-1];
+##     my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
+##     my %h = (
+## 	name => $aref->[0],
+## 	map {$_->[0] => strs2hash($self,$_->[1])} zip [0..$#{$chunks}], $chunks,
+## 	);
+##     return \%h;
+## }
+## 
+## sub strs2lol {
+##     my ($self, $aref) = @_;
+##     (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return [];
+##     my @rest = @{$aref}[1..scalar @{$aref}-1];
+##     my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
+##     my @others = map {strs2lol($self,$_)} @{$chunks};
+##     splice(@others,$self->{traversal},0,$aref->[0]);
+##     return \@others;
+## }
+## 
+## ## below
+## 
+## sub _sepThreshold {
+##     my ($separator, $degree, $aref) = @_;
+##     return 2*(scalar grep {$_ eq $separator} @{$aref}) - (scalar @{$aref}) == $degree - 1;
+## }
+## 
+## sub _ixSplit {
+##     my ($separator, $degree, $aref) = @_;
+##     return first { my @ar = $aref->@[0..$_]; _sepThreshold($separator, $degree, \@ar) } (keys @{$aref});
+## }
+##
 
-sub _eatWhileNot {
-    my ($pred,$acc,$el) = @_;
-    my @larger = (@{$acc->[1]}, $el);
-    return ($pred->(\@larger)) ? ([[@{$acc->[0]}, \@larger],[]]) : ([$acc->[0], \@larger]);
-}
-
-sub _chunkBy {
-    my ($pred,$aref) = @_;
-    my $reduction = reduce { _eatWhileNot($pred, $a, $b) } [[],[]], @{$aref};
-    return $reduction->[0];
-}
-
-sub _isKAry {
-    my ($separator,$degree,$aref) = @_;
-    return ((sum map { ($_ eq $separator) ? (-1) : ($degree-1) } @{$aref}) == -1);
-}
-
-sub _chunkKAry {
-    my ($separator,$degree,$aref) = @_;
-    my $pred = sub { _isKAry($separator,$degree,$_[0]) };
-    return _chunkBy($pred,$aref);
-}
-
-sub strs2hash {
-    my ($self, $aref) = @_;
-    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
-    my @rest = @{$aref}[1..scalar @{$aref}-1];
-    my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
-    my %h = (
-	name => $aref->[0],
-	map {$_->[0] => strs2hash($self,$_->[1])} zip [0..$#{$chunks}], $chunks,
-	);
-    return \%h;
-}
-
-## below
-
-sub _sepThreshold {
-    my ($separator, $degree, $aref) = @_;
-    return 2*(scalar grep {$_ eq $separator} @{$aref}) - (scalar @{$aref}) == $degree - 1;
-}
-
-sub _ixSplit {
-    my ($separator, $degree, $aref) = @_;
-    return first { my @ar = $aref->@[0..$_]; _sepThreshold($separator, $degree, \@ar) } (keys @{$aref});
-}
-
-sub strs2lol {
-    my ($self, $aref) = @_;
-    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return [];
-    my @rest = @{$aref}[1..scalar @{$aref}-1];
-    my $ix = _ixSplit($self->{separator}, $self->{degree}, \@rest);
-    my @left = @rest[0..$ix];
-    my @right = @rest[$ix+1..$#rest];
-    my @lr=(strs2lol($self,\@left), strs2lol($self,\@right));
-    splice(@lr,$self->{traversal},0,$aref->[0]);
-    return \@lr;
-}
-
+## sub strs2lol {
+##     my ($self, $aref) = @_;
+##     (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return [];
+##     my @rest = @{$aref}[1..scalar @{$aref}-1];
+##     my $ix = _ixSplit($self->{separator}, $self->{degree}, \@rest);
+##     my @left = @rest[0..$ix];
+##     my @right = @rest[$ix+1..$#rest];
+##     my @lr=(strs2lol($self,\@left), strs2lol($self,\@right));
+##     splice(@lr,$self->{traversal},0,$aref->[0]);
+##     return \@lr;
+## }
+## 
 1;
 
 __END__

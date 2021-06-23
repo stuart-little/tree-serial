@@ -90,7 +90,11 @@ This is a stub.
 
     my $ts = Tree::Serial->new({traversal => 1});
 
-Can be 0 (meaning pre-order), 1 (meaning in-order), or 2 (meaning post-order). It will modify the behavior of the list-of-lists (de)serialization functions accordingly.
+A non-negative integer, indicating where the root is placed in a tree traversal. It defaults to 0, meaning the root comes first, before the subtrees: what is usually called L<pre-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/>.
+
+If you've specified a C<k>-ary tree, then setting the C<traversal> attribute to C<k> means you are doing a L<post-order traversal|https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/> instead:
+
+    my $ts = Tree::Serial->new({degree => 3, traversal => 3});
 
 =head1 METHODS
 

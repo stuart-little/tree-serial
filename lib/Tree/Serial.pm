@@ -3,7 +3,7 @@ package Tree::Serial;
 use warnings;
 use v5.12;
 
-use List::Util qw(first);
+use List::Util qw(first reduce sum zip);
 
 our $VERSION=0.1;
 
@@ -28,6 +28,43 @@ sub _init {
     $self->{traversal} = $data{traversal};
 }
 
+sub _eatWhileNot {
+    my ($pred,$acc,$el) = @_;
+    my @larger = (@{$acc->[1]}, $el);
+    return ($pred->(\@larger)) ? ([[@{$acc->[0]}, \@larger],[]]) : ([$acc->[0], \@larger]);
+}
+
+sub _chunkBy {
+    my ($pred,$aref) = @_;
+    my $reduction = reduce { _eatWhileNot($pred, $a, $b) } [[],[]], @{$aref};
+    return $reduction->[0];
+}
+
+sub _isKAry {
+    my ($separator,$degree,$aref) = @_;
+    return ((sum map { ($_ eq $separator) ? (-1) : ($degree-1) } @{$aref}) == -1);
+}
+
+sub _chunkKAry {
+    my ($separator,$degree,$aref) = @_;
+    my $pred = sub { _isKAry($separator,$degree,$_[0]) };
+    return _chunkBy($pred,$aref);
+}
+
+sub strs2hash {
+    my ($self, $aref) = @_;
+    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
+    my @rest = @{$aref}[1..scalar @{$aref}-1];
+    my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
+    my %h = (
+	name => $aref->[0],
+	map {$_->[0] => strs2hash($self,$_->[1])} zip [0..$#{$chunks}], $chunks,
+	);
+    return \%h;
+}
+
+## below
+
 sub _sepThreshold {
     my ($separator, $degree, $aref) = @_;
     return 2*(scalar grep {$_ eq $separator} @{$aref}) - (scalar @{$aref}) == $degree - 1;
@@ -36,20 +73,6 @@ sub _sepThreshold {
 sub _ixSplit {
     my ($separator, $degree, $aref) = @_;
     return first { my @ar = $aref->@[0..$_]; _sepThreshold($separator, $degree, \@ar) } (keys @{$aref});
-}
-
-sub strs2hash {
-    my ($self, $aref) = @_;
-    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
-    my @rest = @{$aref}[1..scalar @{$aref}-1];
-    my $ix = _ixSplit($self->{separator}, $self->{degree}, \@rest);
-    my @left = @rest[0..$ix];
-    my @right = @rest[$ix+1..$#rest];
-    return {
-	name => $aref->[0],
-	left => strs2hash($self,\@left),
-	right => strs2hash($self,\@right),
-    };
 }
 
 sub strs2lol {

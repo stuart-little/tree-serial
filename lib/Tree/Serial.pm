@@ -110,9 +110,8 @@ You always specify the tree nodes in L<pre-order traversal|https://www.geeksforg
     1 2 4 . 7 . . . 3 5 . . 6 . . 
 
 would represent the binary tree
-
- `
-       1
+`
+        1
        / \
       2   3
      /   / \

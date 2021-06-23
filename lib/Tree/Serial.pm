@@ -20,7 +20,7 @@ sub _init {
     my %data = (
 	separator => '.',
 	degree => 2,
-        traversal => 'pre',
+        traversal => 0,
 	(defined $data) ? (%{$data}) : (),
 	);
     $self->{separator} = $data{separator};
@@ -59,7 +59,9 @@ sub strs2lol {
     my $ix = _ixSplit($self->{separator}, $self->{degree}, \@rest);
     my @left = @rest[0..$ix];
     my @right = @rest[$ix+1..$#rest];
-    return [$aref->[0], strs2lol($self,\@left), strs2lol($self,\@right),];
+    my @lr=(strs2lol($self,\@left), strs2lol($self,\@right));
+    splice(@lr,$self->{traversal},0,$aref->[0]);
+    return \@lr;
 }
 
 1;

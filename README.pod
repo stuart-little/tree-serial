@@ -16,6 +16,16 @@ This is a stub.
 
 =head2 degree
 
+The common maximal degree assumed of the tree nodes. It defaults to 2:
+
+    my $ts = Tree::Serial->new({degree => 2});
+
+is the same as 
+
+    my $ts = Tree::Serial->new();
+
+but you can specify any other positive integer.
+
 =head2 traversal
 
     my $ts = Tree::Serial->new({traversal => 1});

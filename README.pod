@@ -1,6 +1,6 @@
 =head1 NAME
 
-Tree::Serial - stub
+Tree::Serial - Perl module for deserializing lists of strings into tree-like structures and vice versa
 
 =head1 SYNOPSIS
 
@@ -9,6 +9,16 @@ This is a stub.
 =head1 DESCRIPTION
 
 This is a stub.
+
+=head1 ATTRIBUTES
+
+=head2 separator
+
+=head2 degree
+
+=head2 traversal
+
+=head1 METHODS
 
 =head1 INSTALLATION
 

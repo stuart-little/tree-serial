@@ -111,7 +111,7 @@ You always specify the tree nodes in L<pre-order traversal|https://www.geeksforg
 
 would represent the binary tree
 
-`
+     `
         1
        / \
       2   3

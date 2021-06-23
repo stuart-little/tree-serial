@@ -58,6 +58,10 @@ __END__
 
 Tree::Serial - stub
 
+=head1 SYNOPSIS
+
+This is a stub.
+
 =head1 DESCRIPTION
 
 This is a stub.

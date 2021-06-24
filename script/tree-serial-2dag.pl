@@ -6,21 +6,24 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 
 use Tree::Serial;
+use Tree::DAG_Node;
 
-say Dumper(Tree::Serial->new());
-# $VAR1 = bless( {'separator' => '.','traversal' => 0,'degree' => 2}, 'Tree::Serial' );
+my $lol = Tree::Serial->new({traversal => 2})->strs2lol([qw(1 2 4 . 7 . . . 3 5 . . 6 . .)]);
 
-say Dumper(Tree::Serial->new({separator => "#", degree => 5, traversal => 4}));
-# $VAR1 = bless( {'degree' => 5,'separator' => '#','traversal' => 4}, 'Tree::Serial' );
+say Dumper($lol);
+# $VAR1 = [[[['7'],'4'],'2'],[['5'],['6'],'3'],'1'];
 
-say Dumper(Tree::Serial->new()->strs2hash([qw(p q . . r . .)]));
-# $VAR1 = {'1' => {'name' => 'r'},'name' => 'p','0' => {'name' => 'q'}};
+my $tree = Tree::DAG_Node->lol_to_tree($lol);
+my $diagram = $tree->draw_ascii_tree;
+say map "$_\n", @$diagram; 
 
-say Dumper(Tree::Serial->new({traversal => 2})->strs2lol([qw(a b . c . . .)]));
-# $VAR1 = [[['c'],'b'],'a'];
-
-say Dumper(Tree::Serial->new({traversal => 2,showMissing => undef})->strs2lol([qw(a b . c . . .)]));
-# $VAR1 = [[[],[[],[],'c'],'b'],[],'a'];
-
-say Dumper(Tree::Serial->new({traversal => 2,showMissing => "X"})->strs2hash([qw(a b . c . . .)]));
-# $VAR1 = {'name' => 'a','0' => {'0' => {'name' => 'X'},'name' => 'b','1' => {'1' => {'name' => 'X'},'name' => 'c','0' => {'name' => 'X'}}},'1' => {'name' => 'X'}};
+#         |
+#        <1>
+#     /-----\
+#     |     |
+#    <2>   <3>
+#     |   /---\
+#    <4>  |   |
+#     |  <5> <6>
+#    <7>
+# 

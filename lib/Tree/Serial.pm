@@ -61,10 +61,11 @@ sub strs2hash {
 	return;
     };
     my @rest = @{$aref}[1..scalar @{$aref}-1];
-    my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
+    my @chunks = @{_chunkKAry($self->{separator}, $self->{degree}, \@rest)};
+    (! exists $self->{showMissing}) && do {@chunks = grep {$_->[0] ne $self->{separator}} @chunks};
     my %h = (
 	name => $aref->[0],
-	map {$_->[0] => strs2hash($self,$_->[1])} zip [0..$#{$chunks}], $chunks,
+	map {$_->[0] => strs2hash($self,$_->[1])} zip [0..$#chunks], \@chunks,
 	);
     return \%h;
 }

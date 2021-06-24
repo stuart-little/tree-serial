@@ -95,7 +95,7 @@ Tree::Serial - Perl module for deserializing lists of strings into tree-like str
 
 =head1 SYNOPSIS
 
-The following piece of code appears as C<script/trser.pl> in the present distribution. 
+The following piece of code appears as C<script/tree-serial-general-examples.pl> in the present distribution. 
 
     #!/usr/bin/env perl
     use warnings;

@@ -187,6 +187,20 @@ If you've specified a C<k>-ary tree, then setting the C<traversal> attribute to 
 
 =head1 METHODS
 
+=head2 strs2hash
+
+This will turn your list of strings into a nested hashref:
+
+    my $href = Tree::Serial->new()->strs2hash([qw(1 . 2 . .)]);
+    # {'1' => {'1' => {},'0' => {},'name' => '2'},'0' => {},'name' => '1'};
+
+=head2 strs2lol
+
+This method produces a nested arrayref structure (list of lists, or 'lol'):
+
+    my $aref = Tree::Serial->new({traversal => 2})->strs2lol([qw(1 2 . 3 . . .)]);
+    # [[[],[[],[],'3'],'2'],[],'1'];
+
 STUB
 
 =cut

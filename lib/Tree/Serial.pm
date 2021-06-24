@@ -3,7 +3,7 @@ package Tree::Serial;
 use warnings;
 use v5.12;
 
-use List::Util qw(first reduce sum zip);
+use List::Util qw(min reduce sum zip);
 
 our $VERSION=0.1;
 
@@ -23,6 +23,7 @@ sub _init {
         traversal => 0,
 	(defined $data) ? (%{$data}) : (),
 	);
+    (exists $data{showMissing}) && do {$self->{showMissing} = $data{showMissing}};
     $self->{separator} = $data{separator};
     $self->{degree} = $data{degree};
     $self->{traversal} = $data{traversal};
@@ -53,7 +54,12 @@ sub _chunkKAry {
 
 sub strs2hash {
     my ($self, $aref) = @_;
-    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return {};
+    (! scalar @{$aref}) && return {};
+    ($aref->[0] eq $self->{separator}) && do {
+	(exists $self->{showMissing} && defined $self->{showMissing}) && return {name => $self->{showMissing}};
+	(exists $self->{showMissing}) && return {};
+	return;
+    };
     my @rest = @{$aref}[1..scalar @{$aref}-1];
     my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
     my %h = (
@@ -65,11 +71,16 @@ sub strs2hash {
 
 sub strs2lol {
     my ($self, $aref) = @_;
-    (! scalar @{$aref} || $aref->[0] eq $self->{separator}) && return [];
+    (! scalar @{$aref}) && return [];
+    ($aref->[0] eq $self->{separator}) && do {
+	(exists $self->{showMissing} && defined $self->{showMissing}) && return [$self->{showMissing}];
+	(exists $self->{showMissing}) && return [];
+	return;
+    };
     my @rest = @{$aref}[1..scalar @{$aref}-1];
     my $chunks = _chunkKAry($self->{separator}, $self->{degree}, \@rest);
     my @others = map {strs2lol($self,$_)} @{$chunks};
-    splice(@others,$self->{traversal},0,$aref->[0]);
+    splice(@others,min(scalar @others, $self->{traversal}),0,$aref->[0]);
     return \@others;
 }
 

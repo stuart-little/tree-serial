@@ -7,10 +7,10 @@ use Tree::Serial;
 
 $Data::Dumper::Indent = 0;
 
-say Dumper(Tree::Serial->new());
+say Dumper(Tree::Serial->new({showMissing => ''}));
 # $VAR1 = bless( {'traversal' => 0,'degree' => 2,'separator' => '.'}, 'Tree::Serial' );
 
-say Dumper(Tree::Serial->new({separator => "#", degree => 5, traversal => 4}));
+# say Dumper(Tree::Serial->new({separator => "#", degree => 5, traversal => 4}));
 # $VAR1 = bless( {'degree' => 5,'separator' => '#','traversal' => 4}, 'Tree::Serial' );
 
 say Dumper(Tree::Serial->new()->strs2hash([qw(1 . 2 . .)]));

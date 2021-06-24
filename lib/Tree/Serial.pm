@@ -201,6 +201,4 @@ This method produces a nested arrayref structure (list of lists, or 'lol'):
     my $aref = Tree::Serial->new({traversal => 2})->strs2lol([qw(1 2 . 3 . . .)]);
     # [[[],[[],[],'3'],'2'],[],'1'];
 
-STUB
-
 =cut

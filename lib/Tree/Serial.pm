@@ -5,7 +5,7 @@ use v5.12;
 
 use List::Util qw(min reduce sum zip);
 
-our $VERSION=0.1;
+our $VERSION=0.20;
 
 sub new {
     my ($class,$data) = @_;

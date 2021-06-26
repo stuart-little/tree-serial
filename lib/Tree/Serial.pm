@@ -24,9 +24,7 @@ sub _init {
 	(defined $data) ? (%{$data}) : (),
 	);
     (exists $data{showMissing}) && do {$self->{showMissing} = $data{showMissing}};
-    $self->{separator} = $data{separator};
-    $self->{degree} = $data{degree};
-    $self->{traversal} = $data{traversal};
+    @{$self}{qw(separator degree traversal)} = @data{qw(separator degree traversal)};    
 }
 
 sub _eatWhileNot {

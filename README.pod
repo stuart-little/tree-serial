@@ -154,7 +154,7 @@ It tells the deserializer object what to do with missing nodes (which you enter 
 
 =item *
 
-Let it default to non-existent, in the sense that L<exists|> returns false on C<$deserializer{showMissing}>. Empty nodes will then not be rendered at all:
+Let it default to non-existent, in the sense that L<exists|https://perldoc.pl/functions/exists> returns false on C<$deserializer{showMissing}>. Empty nodes will then not be rendered at all:
 
     say Dumper(Tree::Serial->new({traversal => 2})->strs2lol([qw(1 2 . 3 . . .)]));
     # $VAR1 = [[['3'],'2'],'1'];
